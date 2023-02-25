@@ -1,0 +1,13 @@
+port: "8000"
+
+db:
+  user: "dev"
+  password: "dev-password"
+  host: "localhost"
+  port: "5432"
+  dbname: "devdb"
+
+stan:
+  cluster: "cluster"
+  client: "sub-pub"
+  subject: "nats"

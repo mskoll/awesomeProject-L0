@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:15.0
+    env_file:
+      - ./internal/config/.env
+    volumes:
+      - ./internal/config/init.sql:/docker-entrypoint-initdb.d/10-init.sql
+    ports:
+      - "5432:5432"
+
+  nats:
+    image: nats-streaming:latest
+    ports:
+      - "4222:4222"
+    command: "-cid cluster"
