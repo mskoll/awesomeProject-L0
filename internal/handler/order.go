@@ -25,27 +25,3 @@ func (h *Handler) getOrderById(c *gin.Context) {
 	c.JSON(http.StatusOK, order)
 
 }
-
-//func (h *Handler) createOrder(c *gin.Context) {
-//
-//	var input model.Order
-//
-//	//не читает массив items
-//	if err := c.BindJSON(&input); err != nil {
-//		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
-//		log.Fatalf("Not valid data error: %s", err.Error())
-//		/*newErrorResponse(c, http.StatusBadRequest, err.Error())
-//		return*/
-//	}
-//
-//	//fmt.Printf("data: %s\n", input)
-//	id, err := h.service.CreateOrder(input)
-//
-//	if err != nil {
-//		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-//		return
-//	}
-//	c.JSON(http.StatusOK, map[string]interface{}{
-//		"id": id,
-//	})
-//}
