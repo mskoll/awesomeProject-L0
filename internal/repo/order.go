@@ -99,3 +99,35 @@ func (r *OrderDB) GetOrderById(orderId int) (model.Order, error) {
 
 	return orders, err
 }
+
+// UploadCache получение orders из БД для записи в кэш
+// количество orders ограничивается переменной orderLimit
+func (r *OrderDB) UploadCache() ([]model.Order, error) {
+
+	var orders []model.Order
+	orderLimit := 5
+	orderQuery := fmt.Sprintf("SELECT ot.id, ot.order_uid, ot.track_number, ot.entry, ot.locale, "+
+		"ot.internal_signature, ot.customer_id, ot.delivery_service, ot.shardkey, ot.sm_id, ot.oof_shard "+
+		"FROM %s ot ORDER BY ot.id DESC LIMIT $1", orderTable)
+	err := r.db.Select(&orders, orderQuery, orderLimit)
+
+	for i, order := range orders {
+
+		deliveryQuery := fmt.Sprintf("SELECT dt.name, dt.phone, dt.zip, dt.city, dt.address, dt.region, dt.email "+
+			"FROM %s dt INNER JOIN %s ot ON dt.id = ot.delivery_id WHERE ot.id = $1", deliveryTable, orderTable)
+		err = r.db.Get(&orders[i].Delivery, deliveryQuery, order.Id)
+
+		paymentQuery := fmt.Sprintf("SELECT pt.transaction, pt.request_id, pt.currency, pt.provider, pt.amount, "+
+			"pt.payment_dt, pt.bank, pt.delivery_cost, pt.goods_total, pt.custom_fee "+
+			"FROM %s pt INNER JOIN %s ot ON pt.id = ot.payment_id WHERE ot.id = $1", paymentTable, orderTable)
+		err = r.db.Get(&orders[i].Payment, paymentQuery, order.Id)
+
+		itemsQuery := fmt.Sprintf("SELECT it.chrt_id, it.track_number, it.price, it.rid, it.name, it.sale, it.size,"+
+			"it.total_price, it.nm_id, it.brand, it.status "+
+			"FROM %s it INNER JOIN %s ot ON it.order_id = ot.id WHERE ot.id = $1", itemTable, orderTable)
+		err = r.db.Select(&orders[i].Items, itemsQuery, order.Id)
+
+	}
+
+	return orders, err
+}

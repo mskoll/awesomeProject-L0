@@ -13,14 +13,15 @@ func NewHandler(service *service.Service) *Handler {
 	return &Handler{service: service}
 }
 
+// TODO переписать на net/http
+
 // InitRoutes инициализация эндпойнтов
-func (h *Handler) InitRoutes() *gin.Engine { //переписать на net/http
+func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
 	api := router.Group("/api")
 	{
 		api.GET("/:id", h.getOrderById)
-		//api.POST("/", h.createOrder)
 	}
 	return router
 }

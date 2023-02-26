@@ -12,14 +12,12 @@ func (h *Handler) getOrderById(c *gin.Context) {
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		//newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		log.Fatalf("Param error - invalid id: %s", err.Error())
 	}
 
 	order, err := h.service.GetOrderById(id)
 	if err != nil {
-		//newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		//return
+		log.Fatalf("%s", err.Error())
 	}
 
 	c.JSON(http.StatusOK, order)

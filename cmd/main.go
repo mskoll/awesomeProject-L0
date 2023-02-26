@@ -38,6 +38,12 @@ func main() {
 	// инициализация хэндлера
 	handlers := handler.NewHandler(services)
 
+	// загрузка кэша из БД
+	err = services.UploadCache()
+	if err != nil {
+		log.Fatalf("Cache error: %s", err.Error())
+	}
+
 	// подключение к nats-streaming
 	stanConn, err := nats.Init(nats.Conf{
 		Cluster: viper.GetString("stan.cluster"),

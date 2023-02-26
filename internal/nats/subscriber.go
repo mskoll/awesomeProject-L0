@@ -29,6 +29,7 @@ func Subscribe(sub *Subscriber) {
 		if err := json.Unmarshal(msg.Data, &order); err != nil {
 			log.Printf("Not valid data error: %s", err.Error())
 		} else {
+			// отправка полученного order в сервис
 			_, err := sub.service.CreateOrder(order)
 			if err != nil {
 				log.Printf("Create order error: %s", err.Error())

@@ -8,7 +8,9 @@ import (
 type Order interface {
 	CreateOrder(order model.Order) (int, error)
 	GetOrderById(orderId int) (model.Order, error)
+	UploadCache() error
 }
+
 type Service struct {
 	Order
 }
