@@ -82,6 +82,9 @@ func (r *OrderDB) GetOrderById(orderId int) (model.Order, error) {
 		"ot.internal_signature, ot.customer_id, ot.delivery_service, ot.shardkey, ot.sm_id, ot.oof_shard "+
 		"FROM %s ot WHERE ot.id = $1", orderTable)
 	err := r.db.Get(&orders, orderQuery, orderId)
+	if err != nil {
+		return orders, err
+	}
 
 	deliveryQuery := fmt.Sprintf("SELECT dt.name, dt.phone, dt.zip, dt.city, dt.address, dt.region, dt.email "+
 		"FROM %s dt INNER JOIN %s ot ON dt.id = ot.delivery_id WHERE ot.id = $1", deliveryTable, orderTable)

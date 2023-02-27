@@ -2,7 +2,7 @@ package handler
 
 import (
 	"awesomeProject-L0/internal/service"
-	"github.com/gin-gonic/gin"
+	"github.com/gorilla/mux"
 )
 
 type Handler struct {
@@ -13,15 +13,12 @@ func NewHandler(service *service.Service) *Handler {
 	return &Handler{service: service}
 }
 
-// TODO переписать на net/http
-
 // InitRoutes инициализация эндпойнтов
-func (h *Handler) InitRoutes() *gin.Engine {
-	router := gin.New()
+func (h *Handler) InitRoutes() *mux.Router {
 
-	api := router.Group("/api")
-	{
-		api.GET("/:id", h.getOrderById)
-	}
+	router := mux.NewRouter()
+	router.HandleFunc("/order/{id:[0-9]+}", h.getOrderById).Methods("GET")
+	router.HandleFunc("/order/", h.startPage)
+
 	return router
 }

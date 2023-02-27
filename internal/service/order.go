@@ -37,6 +37,9 @@ func (s *OrderService) GetOrderById(orderId int) (model.Order, error) {
 	if !ok {
 		// получение данных из БД, если данных нет в кэше
 		order, err := s.repo.GetOrderById(orderId)
+		if err != nil {
+			return order, err
+		}
 		// запись данных в кэш
 		s.cache[orderId] = order
 

@@ -1,0 +1,32 @@
+{{define "msg"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+    <style>
+
+
+    </style>
+</head>
+<body>
+<div class="input">
+    <input type="getOrderByID" id="getOrderByID" >
+    <button type="button" onclick="getOrderByID()">Search</button>
+</div>
+<div>
+    <p>{{.}}</p>
+</div>
+</body>
+<script>
+    function getOrderByID() {
+        let orderId = document.getElementById('getOrderByID').value;
+        if (orderId == "") {
+            alert("Input order id value!");
+        } else {
+            window.location = "http://localhost:8000/order/" + orderId
+        }
+    }
+</script>
+</html>
+{{end}}

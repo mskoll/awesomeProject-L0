@@ -1,0 +1,152 @@
+{{define "order"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+    <style>
+        .order{
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+        .info{
+            vertical-align: middle;
+        }
+
+    </style>
+</head>
+<body>
+<div class="input">
+    <input type="getOrderByID" id="getOrderByID" >
+    <button type="button" onclick="getOrderByID()">Search</button>
+</div>
+<div class="order">
+    <div class="info">
+        <p>Order</p>
+        <table>
+            <tr>
+                <th>OrderUid</th>
+                <th>TrackNumber</th>
+                <th>Entry</th>
+                <th>Locale</th>
+                <th>InternalSignature</th>
+                <th>CustomerId</th>
+                <th>DeliveryService</th>
+                <th>Shardkey</th>
+                <th>SmId</th>
+                <th>OofShard</th>
+            </tr>
+            <tr>
+                <td>{{.OrderUid}}</td>
+                <td>{{.TrackNumber}}</td>
+                <td>{{.Entry}}</td>
+                <td>{{.Locale}}</td>
+                <td>{{.InternalSignature}}</td>
+                <td>{{.CustomerId}}</td>
+                <td>{{.DeliveryService}}</td>
+                <td>{{.Shardkey}}</td>
+                <td>{{.SmId}}</td>
+                <td>{{.OofShard}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="info">
+        <p>Delivery</p>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Zip</th>
+                <th>City</th>
+                <th>Address</th>
+                <th>Region</th>
+            </tr>
+            <tr>
+                <td>{{.Delivery.Name}}</td>
+                <td>{{.Delivery.Phone}}</td>
+                <td>{{.Delivery.Zip}}</td>
+                <td>{{.Delivery.City}}</td>
+                <td>{{.Delivery.Address}}</td>
+                <td>{{.Delivery.Region}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="info">
+        <p>Payment</p>
+        <table>
+            <tr>
+                <th>Transaction</th>
+                <th>RequestId</th>
+                <th>Currency</th>
+                <th>Provider</th>
+                <th>Amount</th>
+                <th>PaymentDt</th>
+                <th>Bank</th>
+                <th>DeliveryCost</th>
+                <th>GoodsTotal</th>
+                <th>Currency</th>
+                <th>CustomFee</th>
+            </tr>
+            <tr>
+                <td>{{.Payment.Transaction}}</td>
+                <td>{{.Payment.RequestId}}</td>
+                <td>{{.Payment.Currency}}</td>
+                <td>{{.Payment.Provider}}</td>
+                <td>{{.Payment.Amount}}</td>
+                <td>{{.Payment.PaymentDt}}</td>
+                <td>{{.Payment.Bank}}</td>
+                <td>{{.Payment.DeliveryCost}}</td>
+                <td>{{.Payment.GoodsTotal}}</td>
+                <td>{{.Payment.Currency}}</td>
+                <td>{{.Payment.CustomFee}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="info">
+        <p>Items</p>
+        <table>
+            <tr>
+                <th>ChrtId</th>
+                <th>TrackNumber</th>
+                <th>Price</th>
+                <th>Rid</th>
+                <th>Name</th>
+                <th>Sale</th>
+                <th>Size</th>
+                <th>TotalPrice</th>
+                <th>NmId</th>
+                <th>Brand</th>
+                <th>Status</th>
+            </tr>
+            {{range .Items}}
+            <tr>
+                <td>{{.ChrtId}}</td>
+                <td>{{.TrackNumber}}</td>
+                <td>{{.Price}}</td>
+                <td>{{.Rid}}</td>
+                <td>{{.Name}}</td>
+                <td>{{.Sale}}</td>
+                <td>{{.Size}}</td>
+                <td>{{.TotalPrice}}</td>
+                <td>{{.NmId}}</td>
+                <td>{{.Brand}}</td>
+                <td>{{.Status}}</td>
+            </tr>
+            {{end}}
+        </table>
+    </div>
+</div>
+</body>
+<script>
+    function getOrderByID() {
+        let orderId = document.getElementById('getOrderByID').value;
+        if (orderId == "") {
+            alert("Input order id value!");
+        } else {
+            window.location = "http://localhost:8000/order/" + orderId
+        }
+    }
+</script>
+</html>
+{{end}}

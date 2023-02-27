@@ -1,25 +1,57 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
-	"log"
+	"awesomeProject-L0/internal/model"
+	"github.com/gorilla/mux"
+	"html/template"
 	"net/http"
+	"path/filepath"
 	"strconv"
 )
 
 // getOrderById обработка запроса на получение order
-func (h *Handler) getOrderById(c *gin.Context) {
+func (h *Handler) getOrderById(w http.ResponseWriter, r *http.Request) {
 
-	id, err := strconv.Atoi(c.Param("id"))
+	orderId, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	order, err := h.service.GetOrderById(orderId)
 	if err != nil {
-		log.Fatalf("Param error - invalid id: %s", err.Error())
+		openTemplate("order not found", w)
+		return
+	}
+	openTemplate(order, w)
+
+}
+
+func (h *Handler) startPage(w http.ResponseWriter, r *http.Request) {
+
+	openTemplate("", w)
+}
+
+func openTemplate(data any, w http.ResponseWriter) {
+
+	var page, name string
+
+	switch data.(type) {
+	case string:
+		page = "index.html"
+		name = "msg"
+	case model.Order:
+		page = "order.html"
+		name = "order"
 	}
 
-	order, err := h.service.GetOrderById(id)
+	path := filepath.Join("ui", page)
+	tmpl, err := template.ParseFiles(path)
 	if err != nil {
-		log.Fatalf("%s", err.Error())
+		http.Error(w, err.Error(), 400)
+		return
 	}
 
-	c.JSON(http.StatusOK, order)
+	err = tmpl.ExecuteTemplate(w, name, data)
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
 
 }
