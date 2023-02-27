@@ -6,9 +6,12 @@ import (
 	"awesomeProject-L0/internal/nats"
 	"awesomeProject-L0/internal/repo"
 	"awesomeProject-L0/internal/service"
+	"context"
 	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
 	"log"
+	"os"
+	"os/signal"
 )
 
 func main() {
@@ -64,9 +67,30 @@ func main() {
 
 	// инициализация сервера
 	server := new(internal.Server)
+
 	// запуск сервера
-	if err := server.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
-		log.Fatalf("Server error: %s", err.Error())
+	go func() {
+		if err := server.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
+			log.Printf("Server error: %s", err.Error())
+		}
+	}()
+
+	// канал для получения сигналов системы
+	stop := make(chan os.Signal, 1)
+	// получение сигнала, что приложение завершилось
+	signal.Notify(stop, os.Interrupt)
+	<-stop
+
+	if err := server.Shutdown(context.Background()); err != nil {
+		log.Printf("Server shutdown error: %s", err.Error())
+	}
+
+	if err := db.Close(); err != nil {
+		log.Printf("DB connection close error: %s", err.Error())
+	}
+
+	if err := nats.Close(*stanConn); err != nil {
+		log.Printf("STAN connection close error: %s", err.Error())
 	}
 
 }

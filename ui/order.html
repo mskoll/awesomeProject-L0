@@ -5,15 +5,48 @@
     <meta charset="UTF-8">
     <title>Order</title>
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        input {
+            padding: 7px;
+            font-size: 16px;
+        }
+        button {
+            padding: 7px;
+            font-size: 16px;
+        }
+
+        table, tr, td, th {
+            border-collapse: collapse;
+            border: 1px solid grey;
+        }
+
+        table {
+            width: 90vw;
+        }
+
+        tr, td {
+            padding: 10px;
+        }
+
         .order{
             margin-left: auto;
             margin-right: auto;
-
-        }
-        .info{
-            vertical-align: middle;
         }
 
+        .info p {
+            font-size: 20px;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 25px;
+        }
     </style>
 </head>
 <body>

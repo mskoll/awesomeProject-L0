@@ -29,12 +29,24 @@ func Subscribe(sub *Subscriber) {
 		if err := json.Unmarshal(msg.Data, &order); err != nil {
 			log.Printf("Not valid data error: %s", err.Error())
 		} else {
-			// отправка полученного order в сервис
-			_, err := sub.service.CreateOrder(order)
-			if err != nil {
-				log.Printf("Create order error: %s", err.Error())
+			// проверка валидности данных
+			if ok := orderIsValid(order); !ok {
+				// отправка полученного order в сервис
+				id, err := sub.service.CreateOrder(order)
+				if err != nil {
+					log.Printf("Create order error: %s", err.Error())
+				}
+				log.Printf("Order created with id %d", id)
+			} else {
+				log.Printf("Not valid data error")
 			}
+
 		}
 
 	})
+}
+
+func orderIsValid(order model.Order) bool {
+	return order.Delivery == model.Delivery{} || order.Payment == model.Payment{} || order.Items[0] == model.Item{}
+
 }

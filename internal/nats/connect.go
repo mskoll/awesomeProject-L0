@@ -16,3 +16,9 @@ func Init(conf Conf) (*stan.Conn, error) {
 
 	return &sc, nil
 }
+
+func Close(conn stan.Conn) error {
+
+	err := conn.Close()
+	return err
+}

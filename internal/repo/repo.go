@@ -10,6 +10,7 @@ type Order interface {
 	GetOrderById(orderId int) (model.Order, error)
 	UploadCache() ([]model.Order, error)
 }
+
 type Repo struct {
 	Order
 }

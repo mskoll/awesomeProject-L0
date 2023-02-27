@@ -1,8 +1,3 @@
-DROP TABLE item;
-DROP TABLE orders;
-DROP TABLE delivery;
-DROP TABLE payment;
-
 CREATE TABLE payment
 (
     id            SERIAL PRIMARY KEY,
@@ -43,8 +38,8 @@ CREATE TABLE orders
     shardkey           VARCHAR,
     sm_id              INT,
     oof_shard          VARCHAR,
-    delivery_id        INT,
-    payment_id         INT,
+    delivery_id        INT NOT NULL,
+    payment_id         INT NOT NULL,
     FOREIGN KEY (delivery_id) REFERENCES delivery (id),
     FOREIGN KEY (payment_id) REFERENCES payment (id)
 
@@ -65,7 +60,3 @@ CREATE TABLE item
     status       INT,
     order_id     INT REFERENCES orders (id)
 );
-
-INSERT INTO orders(order_uid, track_number)
-VALUES ('jfvdjn', 'jfdsbgjkdf'),
-       ('jkjfdnsv', 'sbdfgvfgd');

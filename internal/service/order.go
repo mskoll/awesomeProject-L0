@@ -12,10 +12,6 @@ type OrderService struct {
 }
 
 func NewOrderService(repo repo.Order) *OrderService {
-	//cache := make(map[int]model.Order)
-	//orders, err := GetOrderByID()
-	// for -> orders
-	// заполняем кэш
 
 	return &OrderService{repo: repo, cache: make(map[int]model.Order)}
 }
@@ -43,12 +39,12 @@ func (s *OrderService) GetOrderById(orderId int) (model.Order, error) {
 		// запись данных в кэш
 		s.cache[orderId] = order
 
-		log.Println("Get data from DB")
+		log.Printf("Got order %d from DB\n", orderId)
 
 		return order, err
 	}
 
-	log.Println("Get data from CACHE")
+	log.Printf("Got order %d from CACHE\n", orderId)
 
 	return order, nil
 }

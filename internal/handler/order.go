@@ -16,9 +16,10 @@ func (h *Handler) getOrderById(w http.ResponseWriter, r *http.Request) {
 
 	order, err := h.service.GetOrderById(orderId)
 	if err != nil {
-		openTemplate("order not found", w)
+		openTemplate("Order not found :(", w)
 		return
 	}
+
 	openTemplate(order, w)
 
 }
