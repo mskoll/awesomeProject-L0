@@ -9,5 +9,5 @@ db:
 
 stan:
   cluster: "cluster"
-  client: "sub-pub"
-  subject: "nats"
+  clientS: "sub"
+  clientP: "pub"

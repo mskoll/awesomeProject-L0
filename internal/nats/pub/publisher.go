@@ -1,4 +1,4 @@
-package nats
+package main
 
 import (
 	"github.com/nats-io/stan.go"

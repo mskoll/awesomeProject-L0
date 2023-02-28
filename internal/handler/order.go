@@ -4,6 +4,7 @@ import (
 	"awesomeProject-L0/internal/model"
 	"github.com/gorilla/mux"
 	"html/template"
+	"log"
 	"net/http"
 	"path/filepath"
 	"strconv"
@@ -17,6 +18,7 @@ func (h *Handler) getOrderById(w http.ResponseWriter, r *http.Request) {
 	order, err := h.service.GetOrderById(orderId)
 	if err != nil {
 		openTemplate("Order not found :(", w)
+		log.Printf("Order %d not found", orderId)
 		return
 	}
 
