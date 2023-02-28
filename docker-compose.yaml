@@ -2,8 +2,10 @@ version: "3.9"
 services:
   postgres:
     image: postgres:15.0
-    env_file:
-      - ./internal/config/.env
+    environment:
+      POSTGRES_DB: "devdb"
+      POSTGRES_USER: "dev"
+      POSTGRES_PASSWORD: "dev-password"
     volumes:
       - ./internal/config/init.sql:/docker-entrypoint-initdb.d/10-init.sql
     ports:
